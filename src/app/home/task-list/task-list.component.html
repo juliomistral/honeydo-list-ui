@@ -1,19 +1,26 @@
-<div class="list-container card bg-dark text-white border-info mb-3 bg-primary">
-    <div class="list-title card-header">
+<div class="list-container card border-light">
+    <div class="list-title card-header bg-light">
         {{todoList.name}}
     </div>
-    <div class="list-body card-body">
-        <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="list-tree" class="card-body bg-dark">
-            <mat-tree-node *matTreeNodeDef="let todoTask">
-                {{todoTask.name}}
+<!--    <div class="list-body card-body bg-dark">-->
+        <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="list-tree card-body bg-dark">
+            <!-- This is the tree node template for leaf nodes -->
+            <mat-tree-node *matTreeNodeDef="let todoTask" matTreeNodeToggle>
+                <div class="mat-tree-node text-info">
+                    {{todoTask.name}}
+                </div>
             </mat-tree-node>
 
+            <!-- This is the tree node template for expandable nodes -->
             <mat-nested-tree-node *matTreeNodeDef="let todoTask; when: hasSubTasks">
-                <ul>
-                    <li><ng-container matTreeNodeOutlet></ng-container></li>
+                <div class="mat-tree-node text-info">
+                    {{todoTask.name}}
+                </div>
+                <ul [class.example-tree-invisible]="!nestedTreeControl.isExpanded(todoTask)">
+                    <ng-container matTreeNodeOutlet></ng-container>
                 </ul>
             </mat-nested-tree-node>
         </mat-tree>
-    </div>
+<!--    </div>-->
 </div>
 
