@@ -5,6 +5,8 @@ import { AppRoutingModule } from '@src/app/app-routing.module';
 import { AppComponent } from '@src/app/app.component';
 import { HomeComponent } from '@src/app/home/home.component';
 import { TaskListComponent } from '@src/app/home/task-list/task-list.component';
+import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 
@@ -19,10 +21,12 @@ import { TaskListComponent } from '@src/app/home/task-list/task-list.component';
     AppComponent,
     HomeComponent,
     TaskListComponent,
+    TaskItemComponent,
   ],
   imports: [
     NativeScriptModule,
     AppRoutingModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -8,6 +8,7 @@ import { TaskListComponent } from '@src/app/task-list/task-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTreeModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     HomeComponent,
     TaskListComponent,
+    TaskItemComponent,
   ],
     imports: [
         BrowserModule,

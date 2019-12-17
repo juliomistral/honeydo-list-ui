@@ -39,4 +39,8 @@ export class TodoTask {
     public hasChildren(): boolean {
         return this.subTasks.length > 0;
     }
+
+    public isCompleted(): boolean {
+        return this.status === TaskStatus.COMPLETED;
+    }
 }
