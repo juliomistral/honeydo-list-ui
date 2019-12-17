@@ -2,19 +2,26 @@
     <div class="list-title card-header bg-light">
         {{todoList.name}}
     </div>
-        <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="list-tree card-body bg-dark">
+    <div class="card-body bg-secondary">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="bg-secondary">
             <!-- This is the tree node template for leaf nodes -->
-            <mat-tree-node *matTreeNodeDef="let todoTask" matTreeNodeToggle>
-                <app-task-item [todoTask]="todoTask"></app-task-item>
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                <button class="bg-secondary border-0 text-info">
+                    <mat-icon inline aria-hidden="true">drag_indicator</mat-icon>
+                </button>
+                <app-task-item [todoTask]="node.todoTask"></app-task-item>
             </mat-tree-node>
 
             <!-- This is the tree node template for expandable nodes -->
-            <mat-nested-tree-node *matTreeNodeDef="let todoTask; when: hasSubTasks">
-                <app-task-item [todoTask]="todoTask"></app-task-item>
-                <ul [class.example-tree-invisible]="!nestedTreeControl.isExpanded(todoTask)">
-                    <ng-container matTreeNodeOutlet></ng-container>
-                </ul>
-            </mat-nested-tree-node>
+            <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding >
+                <button class="bg-secondary border-0 text-info">
+                    <mat-icon inline>drag_indicator</mat-icon>
+                </button>
+                <button matTreeNodeToggle class="bg-secondary border-0 text-info">
+                    <mat-icon inline>{{treeControl.isExpanded(node) ? 'unfold_more' : 'unfold_less'}}</mat-icon>
+                </button>
+                <app-task-item [todoTask]="node.todoTask"></app-task-item>
+            </mat-tree-node>
         </mat-tree>
-</div>
+    </div>
 

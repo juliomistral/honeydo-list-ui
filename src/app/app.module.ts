@@ -7,6 +7,7 @@ import { HomeComponent } from '@src/app/home/home.component';
 import { TaskListComponent } from '@src/app/task-list/task-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTreeModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.component';
 
@@ -23,6 +24,7 @@ import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.compon
         AppRoutingModule,
         BrowserAnimationsModule,
         MatTreeModule,
+        MatIconModule,
         ReactiveFormsModule
     ],
   providers: [],

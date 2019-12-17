@@ -10,6 +10,7 @@ interface FlatTodoTaskNode {
     name: string;
     level: number;
     expandable: boolean;
+    todoTask: TodoTask;
 }
 
 @Component({
@@ -23,42 +24,43 @@ export class TaskListComponent implements OnInit {
   dataSource: MatTreeFlatDataSource<TodoTask, FlatTodoTaskNode>;
   todoList: Todolist;
 
-  private _transformer = (todoTask: TodoTask, level: number) => {
-    return {
-      name: todoTask.name,
-      level: level,
-      expandable: todoTask.hasChildren()
-    };
-  }
-
   constructor(todoListService: TodoListService) {
     this.treeControl = new FlatTreeControl<FlatTodoTaskNode>(
         dataNode => dataNode.level,
         dataNode => dataNode.expandable
     );
     this.nodeFlatner = new MatTreeFlattener<TodoTask, FlatTodoTaskNode>(
-        this._transformerm,
-            node => node.level,
+        this._transformer,
+        node => node.level,
         node => node.expandable,
-            node => node.subTasks
+        node => node.subTasks,
     );
-
-    this.nestedDataSource = new MatTreeNestedDataSource();
-    this.name = new FormControl('');
+    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.nodeFlatner);
 
     todoListService.getTodoList('SOME_ID').subscribe(
-        todoList => this.registerRetrievedList(todoList)
+        todoList => this._registerRetrievedList(todoList)
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.treeControl.expandAll();
+  }
 
   private getSubTasks = (item: TodoTask) => item.subTasks;
 
-  private registerRetrievedList(todolist: Todolist) {
-    this.nestedDataSource.data = todolist.rootTask.subTasks;
+  hasChild = (_: number, node: FlatTodoTaskNode) => node.expandable;
+
+  private _registerRetrievedList(todolist: Todolist) {
+    this.dataSource.data = todolist.rootTask.subTasks;
     this.todoList = todolist;
   }
 
-  hasSubTasks = (_: number, task: TodoTask) => task.hasChildren();
+  private _transformer = (todoTask: TodoTask, level: number) => {
+    return {
+      name: todoTask.name,
+      level: level,
+      expandable: todoTask.hasChildren(),
+      todoTask: todoTask
+    };
+  }
 }
