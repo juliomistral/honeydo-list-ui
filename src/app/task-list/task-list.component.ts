@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoTask } from '@src/app/model/todolist';
-import { MatTreeNestedDataSource } from '@angular/material';
 import { TodoListService } from '@src/app/services/todo-list.service';
-import { NestedTreeControl} from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { FlatTreeControl } from '@angular/cdk/tree';
 import { Todolist } from '@src/app/model/todolist';
-import {FormControl} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
+interface FlatTodoTaskNode {
+    name: string;
+    level: number;
+    expandable: boolean;
+}
 
 @Component({
   selector: 'app-task-list',
@@ -13,13 +18,31 @@ import {FormControl} from '@angular/forms';
   styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent implements OnInit {
-  nestedTreeControl: NestedTreeControl<TodoTask>;
-  nestedDataSource: MatTreeNestedDataSource<TodoTask>;
+  treeControl: FlatTreeControl<FlatTodoTaskNode>;
+  nodeFlatner: MatTreeFlattener<TodoTask, FlatTodoTaskNode>;
+  dataSource: MatTreeFlatDataSource<TodoTask, FlatTodoTaskNode>;
   todoList: Todolist;
-  name: FormControl;
+
+  private _transformer = (todoTask: TodoTask, level: number) => {
+    return {
+      name: todoTask.name,
+      level: level,
+      expandable: todoTask.hasChildren()
+    };
+  }
 
   constructor(todoListService: TodoListService) {
-    this.nestedTreeControl = new NestedTreeControl<TodoTask>(this.getSubTasks);
+    this.treeControl = new FlatTreeControl<FlatTodoTaskNode>(
+        dataNode => dataNode.level,
+        dataNode => dataNode.expandable
+    );
+    this.nodeFlatner = new MatTreeFlattener<TodoTask, FlatTodoTaskNode>(
+        this._transformerm,
+            node => node.level,
+        node => node.expandable,
+            node => node.subTasks
+    );
+
     this.nestedDataSource = new MatTreeNestedDataSource();
     this.name = new FormControl('');
 
