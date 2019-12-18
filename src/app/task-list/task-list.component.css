@@ -1,0 +1,8 @@
+.todo-list-item {
+    width: 90%;
+    padding: 3px;
+}
+
+mat-tree-node {
+    min-height: 0px !important;
+}

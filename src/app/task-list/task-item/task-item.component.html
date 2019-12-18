@@ -1,8 +1,16 @@
-<div class="d-inline-flex flex-row container-fluid">
-    <div class="flex-lg-column flex-grow-1 w-auto">
+<div class="d-flex flex-row justify-content-start">
+    <div class="">
+        <button class="btn btn-outline-success btn-circle btn-circle-sm">
+            <i class="fa fa-play"></i>
+        </button>
+        <button class="btn btn-outline-info btn-circle btn-circle-sm m-1">
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+    <div class="d-flex ">
         <input type="text"
                size="75"
-               class="task-name bg-secondary text-info border-0"
+               class="flex-grow-1 task-name form-control border-0 border-bottom pb-2 pl-1 ml-1"
                [formControl]="taskNameFormControl">
     </div>
 </div>

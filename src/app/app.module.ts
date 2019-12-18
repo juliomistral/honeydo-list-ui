@@ -8,6 +8,7 @@ import { TaskListComponent } from '@src/app/task-list/task-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTreeModule } from '@angular/material';
 import { MatIconModule } from '@angular/material';
+import {MatInputModule} from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.component';
 
@@ -25,6 +26,7 @@ import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.compon
         BrowserAnimationsModule,
         MatTreeModule,
         MatIconModule,
+        MatInputModule,
         ReactiveFormsModule
     ],
   providers: [],
