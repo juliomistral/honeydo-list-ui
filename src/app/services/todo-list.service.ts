@@ -18,8 +18,8 @@ export class TodoListService {
     );
 
     rootTask.subTasks.push(
-        new TodoTask('5678', 'Go to Safeway', rootTask, [], TaskStatus.NOT_STARTED),
-        new TodoTask('5678', 'Do Laundry', rootTask, [], TaskStatus.NOT_STARTED),
+        new TodoTask('5678', 'Go to Safeway', rootTask, [], TaskStatus.COMPLETED),
+        new TodoTask('5678', 'Do Laundry', rootTask, [], TaskStatus.IN_PROGRESS),
         new TodoTask('5678', 'Hang picture in bedroom', rootTask, [], TaskStatus.NOT_STARTED),
     );
     rootTask.subTasks[2].addSubTask('6785', 'Buy hooks at Home Depot');

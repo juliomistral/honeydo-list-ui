@@ -43,4 +43,8 @@ export class TodoTask {
     public isCompleted(): boolean {
         return this.status === TaskStatus.COMPLETED;
     }
+
+    public toString(): string {
+        return this.name + ' ( ' + this.status + ' )';
+    }
 }

@@ -7,6 +7,7 @@ import { HomeComponent } from '@src/app/home/home.component';
 import { TaskListComponent } from '@src/app/home/task-list/task-list.component';
 import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
 
 
@@ -23,11 +24,12 @@ import {ReactiveFormsModule} from '@angular/forms';
     TaskListComponent,
     TaskItemComponent,
   ],
-  imports: [
-    NativeScriptModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-  ],
+    imports: [
+        NativeScriptModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        CommonModule,
+    ],
   providers: [],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA]

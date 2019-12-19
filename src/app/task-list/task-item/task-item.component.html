@@ -1,16 +1,19 @@
 <div class="d-flex flex-row justify-content-start">
     <div class="">
-        <button class="btn btn-outline-success btn-circle btn-circle-sm">
+        <button class="{{taskStatus == 1 ? 'active' : ''}} btn btn-outline-success btn-circle btn-circle-sm"
+                (click)="markTaskAsStarted()">
             <i class="fa fa-play"></i>
         </button>
-        <button class="btn btn-outline-info btn-circle btn-circle-sm m-1">
+        <button class="{{taskStatus == 3 ? 'active' : ''}} btn btn-outline-info btn-circle btn-circle-sm m-1"
+                (click)="markTaskAsCompleted()">
             <i class="fa fa-check"></i>
         </button>
     </div>
     <div class="d-flex ">
         <input type="text"
-               size="75"
-               class="flex-grow-1 task-name form-control border-0 border-bottom pb-2 pl-1 ml-1"
-               [formControl]="taskNameFormControl">
+               size="50"
+               class="task-name-input flex-grow-1 task-name form-control border-0 border-bottom pb-2 pl-1 ml-1"
+               [formControl]="taskNameFormControl"
+               (blur)="saveTask()">
     </div>
 </div>
