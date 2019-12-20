@@ -4,7 +4,6 @@ import { TodoListService } from '@src/app/services/todo-list.service';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Todolist } from '@src/app/model/todolist';
-import { FormControl } from '@angular/forms';
 
 interface FlatTodoTaskNode {
     name: string;

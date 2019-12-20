@@ -3,8 +3,8 @@
         <h4>{{todoList.name}}</h4>
     </div>
     <div class="card-body">
-        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-            <mat-tree-node *matTreeNodeDef="let node" >
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList [cdkDropListData]="dataSource.data">
+            <mat-tree-node *matTreeNodeDef="let node" cdkDrag>
                 <div class="todo-list-item d-flex flex-row border border-light">
                     <button class="border-0 ml-2">
                         <mat-icon inline aria-hidden="true">drag_indicator</mat-icon>

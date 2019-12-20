@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.compon
         MatTreeModule,
         MatIconModule,
         MatInputModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        DragDropModule
     ],
   providers: [],
   bootstrap: [AppComponent]
