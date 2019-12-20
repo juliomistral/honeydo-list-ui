@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { TodoTask } from '@src/app/model/todolist';
 import { TodoListService } from '@src/app/services/todo-list.service';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
@@ -17,25 +17,29 @@ interface FlatTodoTaskNode {
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
-export class TaskListComponent implements OnInit {
+export class TaskListComponent implements OnInit, AfterViewChecked {
   treeControl: FlatTreeControl<FlatTodoTaskNode>;
   nodeFlatner: MatTreeFlattener<TodoTask, FlatTodoTaskNode>;
   dataSource: MatTreeFlatDataSource<TodoTask, FlatTodoTaskNode>;
   todoList: Todolist;
 
-  constructor(todoListService: TodoListService) {
+  constructor(
+      todoListService: TodoListService,
+      private changeDetectorRef: ChangeDetectorRef
+  ) {
     this.treeControl = new FlatTreeControl<FlatTodoTaskNode>(
         dataNode => dataNode.level,
         dataNode => dataNode.expandable
     );
+
     this.nodeFlatner = new MatTreeFlattener<TodoTask, FlatTodoTaskNode>(
         this._transformer,
         node => node.level,
         node => node.expandable,
         node => node.subTasks,
     );
-    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.nodeFlatner);
 
+    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.nodeFlatner);
     todoListService.getTodoList('SOME_ID').subscribe(
         todoList => this._registerRetrievedList(todoList)
     );
@@ -45,9 +49,17 @@ export class TaskListComponent implements OnInit {
     this.treeControl.expandAll();
   }
 
-  private getSubTasks = (item: TodoTask) => item.subTasks;
+  ngAfterViewChecked(): void {
+    // Without forcing change detection after the default change detector has finished, the
+    // drag-and-drop will produce the error:
+    //   Uncaught TypeError: Cannot read property '_getSiblingContainerFromPosition' of undefined
+    //
+    // For more info, see bug https://github.com/angular/components/issues/15948
+    this.changeDetectorRef.detectChanges();
+  }
 
-  hasChild = (_: number, node: FlatTodoTaskNode) => node.expandable;
+  private getSubTasks = (item: TodoTask) => item.subTasks;
+  private hasChild = (_: number, node: FlatTodoTaskNode) => node.expandable;
 
   private _registerRetrievedList(todolist: Todolist) {
     this.dataSource.data = todolist.rootTask.subTasks;
