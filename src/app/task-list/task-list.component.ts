@@ -68,6 +68,7 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
   private _registerRetrievedList(todolist: Todolist) {
     this.dataSource.data = todolist.rootTask.subTasks;
     this.todoList = todolist;
+    console.log(`...flattened nodes:  ${this.treeControl.dataNodes}`);
   }
 
   private _transformer = (todoTask: TodoTask, level: number) => {
@@ -84,7 +85,11 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
   }
 
   handleTaskDrop(event: CdkDragDrop<TodoTask[]>) {
-    console.log(`Prev. index: ${event.previousIndex}, New Index: ${event.currentIndex}`);
-    console.log(`...flattened nodes:  ${this.dataSource.data}`);
+    const draggedTask: TodoTask = this.treeControl.dataNodes[event.previousIndex].todoTask;
+    const dropTargetTask: TodoTask = this.treeControl.dataNodes[event.currentIndex].todoTask;
+
+    console.log(`Prev. index: ${event.previousIndex}`);
+    console.log(`...dragged task:  ${draggedTask}`);
+    console.log(`...drop target task:  ${dropTargetTask}`);
   }
 }

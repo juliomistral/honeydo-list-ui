@@ -6,6 +6,7 @@
         <mat-tree [dataSource]="dataSource"
                   [treeControl]="treeControl"
                   cdkDropList
+                  cdkDropListLockAxis = 'y'
                   (cdkDropListDropped)="handleTaskDrop($event)">
             <mat-tree-node *matTreeNodeDef="let node" cdkDrag>
                 <div class="todo-list-item d-flex flex-row border border-light w-100">
