@@ -3,14 +3,17 @@
         <h4>{{todoList.name}}</h4>
     </div>
     <div class="card-body w-100">
-        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList>
+        <mat-tree [dataSource]="dataSource"
+                  [treeControl]="treeControl"
+                  cdkDropList
+                  (cdkDropListDropped)="handleTaskDrop($event)">
             <mat-tree-node *matTreeNodeDef="let node" cdkDrag>
                 <div class="todo-list-item d-flex flex-row border border-light w-100">
                     <button class="drag-handle border-0 ml-2 bg-white" cdkDragHandle>
                         <mat-icon inline aria-hidden="true">drag_indicator</mat-icon>
                     </button>
                     <app-task-item matTreeNodePadding
-                                   matTreeNodePaddingIndent="28"
+                                   matTreeNodePaddingIndent="30"
                                    class="w-100"
                                    [todoTask]="node.todoTask"></app-task-item>
                 </div>

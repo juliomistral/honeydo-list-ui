@@ -4,12 +4,16 @@ import { TodoListService } from '@src/app/services/todo-list.service';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Todolist } from '@src/app/model/todolist';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import { CollectionViewer } from '@angular/cdk/collections';
 
 interface FlatTodoTaskNode {
+    id: number;
     name: string;
     level: number;
     expandable: boolean;
     todoTask: TodoTask;
+    toString(): string;
 }
 
 @Component({
@@ -51,7 +55,7 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked(): void {
     // Without forcing change detection after the default change detector has finished, the
-    // drag-and-drop will produce the error:
+    // drag-and-drop will produce the following JS error:
     //   Uncaught TypeError: Cannot read property '_getSiblingContainerFromPosition' of undefined
     //
     // For more info, see bug https://github.com/angular/components/issues/15948
@@ -68,10 +72,19 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
 
   private _transformer = (todoTask: TodoTask, level: number) => {
     return {
+      id: todoTask.id,
       name: todoTask.name,
       level: level,
       expandable: todoTask.hasChildren(),
-      todoTask: todoTask
+      todoTask: todoTask,
+      toString: function () {
+        return this.todoTask.toString();
+      }
     };
+  }
+
+  handleTaskDrop(event: CdkDragDrop<TodoTask[]>) {
+    console.log(`Prev. index: ${event.previousIndex}, New Index: ${event.currentIndex}`);
+    console.log(`...flattened nodes:  ${this.dataSource.data}`);
   }
 }

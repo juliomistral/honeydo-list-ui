@@ -18,13 +18,13 @@ export class Todolist {
 }
 
 export class TodoTask {
-    id: string;
+    id: number;
     name: string;
     parent: TodoTask;
     subTasks: TodoTask[];
     status: TaskStatus;
 
-    constructor(id: string, name: string, parent: TodoTask, subTasks: TodoTask[], status: TaskStatus) {
+    constructor(id: number, name: string, parent: TodoTask, subTasks: TodoTask[], status: TaskStatus) {
         this.id = id;
         this.name = name;
         this.parent = parent;
@@ -32,7 +32,7 @@ export class TodoTask {
         this.status = status;
     }
 
-    public addSubTask(id: string, name: string) {
+    public addSubTask(id: number, name: string) {
         const subTask = new TodoTask(id, name, this, [], TaskStatus.NOT_STARTED);
         this.subTasks.push(subTask);
     }
@@ -45,6 +45,6 @@ export class TodoTask {
     }
 
     public toString(): string {
-        return this.name + ' ( ' + this.status + ' )';
+        return `[${this.id}] ${this.name} (${this.status})`;
     }
 }

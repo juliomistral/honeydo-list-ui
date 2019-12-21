@@ -10,7 +10,7 @@ export class TodoListService {
 
   private _emitSampleList(observer) {
     const rootTask: TodoTask = new TodoTask(
-        '1234',
+        Math.random(),
         null,
         null,
         <TodoTask[]>[],
@@ -18,12 +18,12 @@ export class TodoListService {
     );
 
     rootTask.subTasks.push(
-        new TodoTask('5678', 'Go to Safeway', rootTask, [], TaskStatus.COMPLETED),
-        new TodoTask('5678', 'Do Laundry', rootTask, [], TaskStatus.IN_PROGRESS),
-        new TodoTask('5678', 'Hang picture in bedroom', rootTask, [], TaskStatus.NOT_STARTED),
+        new TodoTask(Math.random(), 'Go to Safeway', rootTask, [], TaskStatus.COMPLETED),
+        new TodoTask(Math.random(), 'Do Laundry', rootTask, [], TaskStatus.IN_PROGRESS),
+        new TodoTask(Math.random(), 'Hang picture in bedroom', rootTask, [], TaskStatus.NOT_STARTED),
     );
-    rootTask.subTasks[2].addSubTask('6785', 'Buy hooks at Home Depot');
-    rootTask.subTasks[2].addSubTask('6785', 'Buy frame at Target');
+    rootTask.subTasks[2].addSubTask(Math.random(), 'Buy hooks at Home Depot');
+    rootTask.subTasks[2].addSubTask(Math.random(), 'Buy frame at Target');
 
     observer.next(
         new Todolist(
