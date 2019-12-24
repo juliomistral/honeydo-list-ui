@@ -6,6 +6,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { Todolist } from '@src/app/model/todolist';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import { CollectionViewer } from '@angular/cdk/collections';
+import {TodoListService} from '@src/app/services/todo-list.service';
 
 interface FlatTodoTaskNode {
     id: number;
@@ -26,9 +27,11 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
   treeControl: FlatTreeControl<FlatTodoTaskNode>;
   nodeFlatner: MatTreeFlattener<TodoTask, FlatTodoTaskNode>;
   dataSource: MatTreeFlatDataSource<TodoTask, FlatTodoTaskNode>;
+  todoList: Todolist;
 
   constructor(
       todoTaskService: TodoTaskService,
+      todoListService: TodoListService,
       private changeDetectorRef: ChangeDetectorRef
   ) {
     this.treeControl = new FlatTreeControl<FlatTodoTaskNode>(
@@ -44,9 +47,13 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
     );
 
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.nodeFlatner);
+
     todoTaskService.getRootTaskForList(this.listId).subscribe(
         rootTask => this._registerRootTask(rootTask)
     );
+    todoListService.getTodoList(this.listId).subscribe(value => {
+      this.todoList = value;
+    });
   }
 
   ngOnInit() {

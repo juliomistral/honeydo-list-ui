@@ -9,14 +9,16 @@ export enum TaskStatus {
 }
 
 export class Todolist {
-    id: string;
+    id: number;
     name: string;
-    rootTask: TodoTask;
+    rootTaskId: number;
+    description?: string;
 
-    constructor(id: string, name: string, rootTask: TodoTask) {
+    constructor(id: number, name: string, rootTaskId: number, description = null) {
         this.id = id;
         this.name = name;
-        this.rootTask = rootTask;
+        this.description = description;
+        this.rootTaskId = rootTaskId;
     }
 }
 
