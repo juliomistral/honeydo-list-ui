@@ -1,6 +1,6 @@
-import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import { TodoTask } from '@src/app/model/todolist';
-import { TodoListService } from '@src/app/services/todo-list.service';
+import { TodoTaskService } from '@src/app/services/todo-task.service';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Todolist } from '@src/app/model/todolist';
@@ -22,13 +22,13 @@ interface FlatTodoTaskNode {
   styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent implements OnInit, AfterViewChecked {
+  @Input() listId: number;
   treeControl: FlatTreeControl<FlatTodoTaskNode>;
   nodeFlatner: MatTreeFlattener<TodoTask, FlatTodoTaskNode>;
   dataSource: MatTreeFlatDataSource<TodoTask, FlatTodoTaskNode>;
-  todoList: Todolist;
 
   constructor(
-      todoListService: TodoListService,
+      todoTaskService: TodoTaskService,
       private changeDetectorRef: ChangeDetectorRef
   ) {
     this.treeControl = new FlatTreeControl<FlatTodoTaskNode>(
@@ -44,8 +44,8 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
     );
 
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.nodeFlatner);
-    todoListService.getTodoList('SOME_ID').subscribe(
-        todoList => this._registerRetrievedList(todoList)
+    todoTaskService.getRootTaskForList(this.listId).subscribe(
+        rootTask => this._registerRootTask(rootTask)
     );
   }
 
@@ -65,9 +65,8 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
   private getSubTasks = (item: TodoTask) => item.subTasks;
   private hasChild = (_: number, node: FlatTodoTaskNode) => node.expandable;
 
-  private _registerRetrievedList(todolist: Todolist) {
-    this.dataSource.data = todolist.rootTask.subTasks;
-    this.todoList = todolist;
+  private _registerRootTask(rootTask: TodoTask) {
+    this.dataSource.data = rootTask.subTasks;
     console.log(`...flattened nodes:  ${this.treeControl.dataNodes}`);
   }
 
