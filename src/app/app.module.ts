@@ -12,6 +12,13 @@ import {MatInputModule} from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './app.effects';
+import { RootStoreModule } from './root-store/root-store.module';
 
 
 @NgModule({
@@ -29,7 +36,17 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
         MatIconModule,
         MatInputModule,
         ReactiveFormsModule,
-        DragDropModule
+        DragDropModule,
+        StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true
+      }
+    }),
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+        EffectsModule.forRoot([AppEffects]),
+        RootStoreModule
     ],
   providers: [],
   bootstrap: [AppComponent]
