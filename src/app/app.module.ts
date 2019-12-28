@@ -13,13 +13,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
 import { RootStoreModule } from './root-store/root-store.module';
-
 
 @NgModule({
   declarations: [
@@ -37,16 +35,12 @@ import { RootStoreModule } from './root-store/root-store.module';
         MatInputModule,
         ReactiveFormsModule,
         DragDropModule,
-        StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true
-      }
-    }),
-        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-        EffectsModule.forRoot([AppEffects]),
-        RootStoreModule
+        RootStoreModule,
+        StoreDevtoolsModule.instrument({
+            maxAge: 25, // Retains last 25 states
+            logOnly: environment.production, // Restrict extension to log-only mode,
+            name: 'Honeydo List Ngrx Store Dev'
+        }),
     ],
   providers: [],
   bootstrap: [AppComponent]
