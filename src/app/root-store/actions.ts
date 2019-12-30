@@ -1,29 +1,29 @@
-import { Action } from '@ngrx/store';
-import { AllEntityData } from '@src/app/services/datatransfer';
+import {createAction, props} from '@ngrx/store';
+import {AllEntityData, AllUiData} from '@src/app/services/datatransfer';
 
 
 export enum ActionTypes {
     APP_STARTUP_STARTED = '[Root] Application startup started',
-    LOAD_APP_STATE = '[Root] Load app initial state',
-    APP_STATE_LOADED = '[Root] App initial state loaded',
+    APP_INITIAL_STATE_LOADED = '[Root] App initial state loaded',
     APP_STARTUP_COMPLETED = '[Root] Application startup completed',
+    ERROR_OCCURRED = '[Root] Error occurred'
 }
 
-export class AppStartupStartedAction implements Action {
-    type = ActionTypes.APP_STARTUP_STARTED;
-}
+export const AppStartupStartedAction = createAction(
+  ActionTypes.APP_STARTUP_STARTED
+);
 
-export class LoadAppInitialStateAction implements Action {
-    type = ActionTypes.LOAD_APP_STATE;
-}
+export const AppInitialStateLoadedAction = createAction(
+    ActionTypes.APP_INITIAL_STATE_LOADED,
+    props<{data: AllUiData}>()
+);
 
-export class AppInitialStateLoadedAction implements Action {
-    type = ActionTypes.APP_STATE_LOADED;
-    constructor(payload: { data: AllEntityData }) {}
-}
+export const AppStartupCompletedAction = createAction(
+    ActionTypes.APP_STARTUP_COMPLETED
+);
 
-export class AppStartupCompletedAction implements Action {
-    type = ActionTypes.APP_STARTUP_COMPLETED;
-}
+export const ErrorAction = createAction(
+    ActionTypes.ERROR_OCCURRED,
+    props<{ msg: string, reasonCode?: number }>()
+);
 
-export type RootActions = AppStartupStartedAction | LoadAppInitialStateAction | AppInitialStateLoadedAction | AppStartupCompletedAction;

@@ -12,6 +12,7 @@ export class TodoListService {
 
   public getTodoList(listId: number): Observable<Todolist> {
     const list: Todolist = new Todolist(ModelUtils.generateRandomId(), 'Adulting', 1234567890);
+
     return new Observable(subscriber => {
       subscriber.next(list);
     });

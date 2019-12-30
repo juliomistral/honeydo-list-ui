@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Store} from '@ngrx/store';
 import { ApplicationState } from '@src/app/root-store/state';
-import { AppStartupStartedAction } from '@src/app/root-store/actions';
+import { RootActions } from '@src/app/root-store';
 
 @Component({
   selector: 'app-home',
@@ -14,8 +14,6 @@ export class HomeComponent implements OnInit {
   constructor(private store$: Store<ApplicationState>) { }
 
   ngOnInit() {
-    this.store$.dispatch(
-      new AppStartupStartedAction()
-    );
+    this.store$.dispatch(RootActions.AppStartupStartedAction());
   }
 }

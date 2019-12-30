@@ -35,6 +35,8 @@ import { RootStoreModule } from './root-store/root-store.module';
         MatInputModule,
         ReactiveFormsModule,
         DragDropModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([]),
         RootStoreModule,
         StoreDevtoolsModule.instrument({
             maxAge: 25, // Retains last 25 states

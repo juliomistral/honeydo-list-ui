@@ -1,6 +1,6 @@
 import {Todolist, TodoTask} from '@src/app/model/todolist';
-import { TodoListState, initialState as todoListInitState } from 'src/app/task-list/store/state';
-import { TaskItemState, initialState as todoItemInitState } from 'src/app/task-list/task-item/store/state';
+import {TodoListActions, TodoListState} from 'src/app/task-list/store';
+import {TodoItemActions, TodoItemState} from 'src/app/task-list/task-item/store';
 
 export interface ApplicationState {
     uiState: UiState;
@@ -15,8 +15,8 @@ export interface UiState {
 }
 
 export interface StoreState {
-    taskList: TodoListState;
-    taskItem: TaskItemState;
+    taskList: TodoListState.State;
+    taskItem: TodoItemState.State;
 }
 
 export const INITIAL_UI_STATE: UiState = {
@@ -27,8 +27,8 @@ export const INITIAL_UI_STATE: UiState = {
 };
 
 export const INITIAL_STORE_STATE: StoreState = {
-    taskList: todoListInitState,
-    taskItem: todoItemInitState
+    taskList: TodoListState.initialState,
+    taskItem: TodoItemState.initialState
 };
 
 export const INITIAL_APPLICATION_STATE: ApplicationState = {
