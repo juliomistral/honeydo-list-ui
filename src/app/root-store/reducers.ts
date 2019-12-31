@@ -1,21 +1,20 @@
-import {ErrorAction, AppInitialStateLoadedAction} from './actions';
-import {INITIAL_UI_STATE, UiState} from './state';
+import {appInitialStateLoadedAction, errorAction} from './actions';
+import {initialState as RootInitialState, AppState} from './state';
 import {Action, createReducer, on} from '@ngrx/store';
 
-
-export const rootReducerKey = 'uiState';
+export const rootReducerKey = 'appState';
 
 const rootReducers = createReducer(
-    INITIAL_UI_STATE,
+    RootInitialState,
     on(
-        ErrorAction,
+        errorAction,
         (state, action) => ({
             ...state,
             currentError: action.msg
         })
     ),
-    on (
-        AppInitialStateLoadedAction,
+    on(
+        appInitialStateLoadedAction,
         (state, action) => ({
             ...state,
             userId: action.data.currentUserId,
@@ -24,6 +23,6 @@ const rootReducers = createReducer(
     )
 );
 
-export function reducer(state: UiState | undefined, action: Action) {
+export function reducer(state: AppState | undefined, action: Action) {
     return rootReducers(state, action);
 }

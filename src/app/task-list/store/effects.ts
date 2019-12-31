@@ -1,36 +1,28 @@
 import {Injectable} from '@angular/core';
-import {TodoListService} from '../../services/todo-list.service';
+import {of} from 'rxjs';
 import {Actions, createEffect, Effect, ofType} from '@ngrx/effects';
-import {map, mergeMap, catchError} from 'rxjs/operators';
-import {RootActions} from 'src/app/root-store';
-import {TodoListActions} from 'src/app/task-list/store';
-import {Todolist} from '../../model/todolist';
-import {Observable, of} from 'rxjs';
-import {Action} from '@ngrx/store';
+import {catchError, switchMap} from 'rxjs/operators';
+import * as RootActions from 'src/app/root-store/actions';
+import * as TodoListActions from 'src/app/task-list/store/actions';
+import * as TodoItemActions from 'src/app/task-list/task-item/store/actions';
+import {TodoListService} from '../../services/todo-list.service';
 
 
 @Injectable()
 export class TaskListStoreEffects {
     constructor(private todoListService: TodoListService, private actions$: Actions) {}
 
-    @Effect()
     appInitialStateLoadedEffect$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(RootActions.AppInitialStateLoadedAction),
-            mergeMap(value => this._executeListRetrieval(value.data.currentListId))
+            ofType(RootActions.appInitialStateLoadedAction),
+            switchMap((action: any) => this.todoListService.getTodoList(action.data.currentListId)),
+            switchMap( resp => [
+                TodoListActions.todoListLoadedAction({todoList: resp}),
+                TodoItemActions.loadTodoTask({taskId: resp.rootTaskId})
+            ]),
+            catchError(err =>
+                of(RootActions.errorAction({ msg: err.toString() }))
+            )
         )
     );
-
-    private _executeListRetrieval(id: number): Observable<Action> {
-        return this.todoListService
-            .getTodoList(id)
-            .pipe(
-                map(toDoList =>
-                    new TodoListActions.TodoListLoadedAction({todoList: toDoList})
-                ),
-                catchError(err =>
-                    of(RootActions.ErrorAction({ msg: err.toString() }))
-                )
-            );
-    }
 }

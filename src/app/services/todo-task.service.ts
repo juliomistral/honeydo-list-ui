@@ -29,15 +29,15 @@ const TASK_TEST_DATA = {
     name: 'Hang up picture',
     parentId: ROOT_ID,
     subTasks: [{
-      id: TASK_3_A_ID,
-      name: 'Go to HomeDepot to get hooks',
-      parentId: TASK_3_ID,
-      status: TaskStatus.IN_PROGRESS
-    }, {
-      id: TASK_3_B_ID,
-      name: 'Pick up new frame',
-      parentId: TASK_3_ID,
-      status: TaskStatus.IN_PROGRESS,
+        id: TASK_3_A_ID,
+        name: 'Go to HomeDepot to get hooks',
+        parentId: TASK_3_ID,
+        status: TaskStatus.IN_PROGRESS
+      }, {
+        id: TASK_3_B_ID,
+        name: 'Pick up new frame',
+        parentId: TASK_3_ID,
+        status: TaskStatus.IN_PROGRESS,
     }]
   }]
 };
@@ -48,7 +48,7 @@ const TASK_TEST_DATA = {
 export class TodoTaskService {
   constructor() { }
 
-  getRootTaskForList(listId: number): Observable<TodoTask> {
+  getTasksForRootTaskId(rootTaskId: number): Observable<TodoTask> {
     const rootTask: TodoTask = plainToClass(TodoTask, TASK_TEST_DATA);
 
     return new Observable<TodoTask>(subscriber => {

@@ -48,7 +48,7 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
 
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.nodeFlatner);
 
-    todoTaskService.getRootTaskForList(this.listId).subscribe(
+    todoTaskService.getTasksForRootTaskId(this.listId).subscribe(
         rootTask => this._registerRootTask(rootTask)
     );
     todoListService.getTodoList(this.listId).subscribe(value => {

@@ -1,13 +1,13 @@
 import {Todolist} from '@src/app/model/todolist';
 
-export interface State {
+export interface TodolistState {
     currentList: Todolist;
     isLoading?: boolean;
     error?: string;
 }
 
-export const initialState: State = {
+export const initialState: TodolistState = {
     currentList: null,
-    isLoading: false,
+    isLoading: true,
     error: null
 };

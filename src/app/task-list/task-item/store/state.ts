@@ -5,12 +5,12 @@ export const todoTaskAdapter: EntityAdapter<TodoTask> = createEntityAdapter<Todo
     selectId: model => model.id
 });
 
-export interface State extends EntityState<TodoTask> {
+export interface TodoTaskState extends EntityState<TodoTask> {
     isLoading?: boolean;
     error?: string;
 }
 
-export const initialState: State = todoTaskAdapter.getInitialState(
+export const initialState: TodoTaskState = todoTaskAdapter.getInitialState(
     {
         isLoading: false,
         error: null
