@@ -11,13 +11,11 @@ import { MatIconModule } from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TaskItemComponent } from '@src/app/task-list/task-item/task-item.component';
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import { StoreModule } from '@ngrx/store';
+import { DragDropModule} from '@angular/cdk/drag-drop';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './app.effects';
-import { RootStoreModule } from './root-store/root-store.module';
+import { RootStoreModule} from '@src/app/root-store/root-store.module';
+
 
 @NgModule({
   declarations: [
@@ -35,8 +33,6 @@ import { RootStoreModule } from './root-store/root-store.module';
         MatInputModule,
         ReactiveFormsModule,
         DragDropModule,
-        StoreModule.forRoot({}),
-        EffectsModule.forRoot([]),
         RootStoreModule,
         StoreDevtoolsModule.instrument({
             maxAge: 25, // Retains last 25 states

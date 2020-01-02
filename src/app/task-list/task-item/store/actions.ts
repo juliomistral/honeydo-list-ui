@@ -6,9 +6,10 @@ export enum ActionTypes {
     MARK_TODO_TASK_COMPLETED = '[Task Item] Mark task completed',
     MARK_TODO_TASK_STARTED = '[Task Item] Mark task started',
     UPDATE_TODO_TASK_PROPERTIES = '[Task Item] Update task properties',
+
     // Intra store actions (cascading model updates)
-    TODO_TASK_LOADED = '[Task Item] Task loaded',
-    LOAD_TODO_TASK = '[Task Item] Load task',
+    ROOT_TODO_TASK_LOADED = '[Task Item] Root tasks loaded',
+    LOAD_ROOT_TODO_TASKS = '[Task Item] Load tasks for root task',
 }
 
 export const markTaskAsCompletedAction = createAction(
@@ -26,13 +27,13 @@ export const updateTodoTaskPropertiesAction = createAction(
     props<{id: number, name: string}>()
 );
 
-export const loadTodoTask = createAction(
-    ActionTypes.LOAD_TODO_TASK,
+export const loadRootTodoTasks = createAction(
+    ActionTypes.LOAD_ROOT_TODO_TASKS,
     props<{ taskId: number }>()
 );
 
-export const todoTasksLoaded = createAction(
-    ActionTypes.TODO_TASK_LOADED,
-    props<{ task: TodoTask }>()
+export const rootTodoTasksLoaded = createAction(
+    ActionTypes.ROOT_TODO_TASK_LOADED,
+    props<{ tasks: TodoTask[] }>()
 );
 

@@ -18,7 +18,7 @@ export class TaskListStoreEffects {
             switchMap((action: any) => this.todoListService.getTodoList(action.data.currentListId)),
             switchMap( resp => [
                 TodoListActions.todoListLoadedAction({todoList: resp}),
-                TodoItemActions.loadTodoTask({taskId: resp.rootTaskId})
+                TodoItemActions.loadRootTodoTasks({taskId: resp.rootTaskId})
             ]),
             catchError(err =>
                 of(RootActions.errorAction({ msg: err.toString() }))

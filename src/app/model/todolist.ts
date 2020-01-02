@@ -2,10 +2,9 @@ import { Type } from "class-transformer";
 
 
 export enum TaskStatus {
-    NOT_STARTED,
-    IN_PROGRESS,
-    ON_HOLD,
-    COMPLETED
+    NOT_STARTED = 'NOT_STARTED',
+    IN_PROGRESS = 'IN_PROGRESS',
+    COMPLETED = 'COMPLETED'
 }
 
 export class Todolist {
@@ -26,29 +25,23 @@ export class TodoTask {
     id: number;
     name: string;
     status?: TaskStatus;
-    parent?: TodoTask;
-    @Type(type => TodoTask)
-    subTasks?: TodoTask[];
+    parentId: TodoTask;
+    subTaskIds?: number[];
 
     constructor(id: number,
                 name: string,
                 status = TaskStatus.NOT_STARTED,
                 parent = null,
-                subTasks = [] as TodoTask[]) {
+                subTaskIds = [] as number[]) {
         this.id = id;
         this.name = name;
         this.status = status;
-        this.parent = parent;
-        this.subTasks = subTasks;
-    }
-
-    public addSubTask(subTask:  TodoTask) {
-        subTask.parent = this.parent;
-        this.subTasks.push(subTask);
+        this.parentId = parent;
+        this.subTaskIds = subTaskIds;
     }
 
     public hasChildren(): boolean {
-        return this.subTasks.length > 0;
+        return this.subTaskIds.length > 0;
     }
 
     public isCompleted(): boolean {
@@ -56,7 +49,7 @@ export class TodoTask {
     }
 
     public isRoot(): boolean {
-        return this.parent = null;
+        return this.parentId = null;
     }
 
     public toString(): string {

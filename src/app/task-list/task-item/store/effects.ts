@@ -15,12 +15,12 @@ export class TodoItemStoreEffects {
 
     loadTodoTask$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(TodoItemActions.loadTodoTask),
+            ofType(TodoItemActions.loadRootTodoTasks),
             switchMap((action: any) => {
                 return this.taskItemService.getTasksForRootTaskId(action.taskId);
             }),
-            switchMap(todoTask => [
-                TodoItemActions.todoTasksLoaded({task: todoTask})
+            switchMap(todoTasks => [
+                TodoItemActions.rootTodoTasksLoaded({ tasks: todoTasks })
             ]),
             catchError(err =>
                 of(errorAction({ msg: err.toString() }))

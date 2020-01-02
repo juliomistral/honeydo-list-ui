@@ -4,14 +4,14 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import {TaskListStoreEffects} from '@src/app/task-list/store/effects';
-import {todoListReducerKey, reducer} from '@src/app/task-list/store/reducers';
+import * as fromTaskLists from '@src/app/task-list/store/reducers';
 
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature(todoListReducerKey, reducer),
+    StoreModule.forFeature(fromTaskLists.todoListFeatureKey, fromTaskLists.reducer),
     EffectsModule.forFeature([TaskListStoreEffects])
   ]
 })
