@@ -18,12 +18,12 @@ import { RootStoreModule} from '@src/app/root-store/root-store.module';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    TaskListComponent,
-    TaskItemComponent,
-  ],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        TaskListComponent,
+        TaskItemComponent,
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -40,7 +40,10 @@ import { RootStoreModule} from '@src/app/root-store/root-store.module';
             name: 'Honeydo List Ngrx Store Dev'
         }),
     ],
-  providers: [],
-  bootstrap: [AppComponent]
+    providers: [],
+    exports: [
+        TaskListComponent
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

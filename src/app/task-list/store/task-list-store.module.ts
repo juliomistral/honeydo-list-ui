@@ -11,7 +11,7 @@ import * as fromTaskLists from '@src/app/task-list/store/reducers';
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature(fromTaskLists.todoListFeatureKey, fromTaskLists.reducer),
+    StoreModule.forFeature(fromTaskLists.featureKey, fromTaskLists.reducer),
     EffectsModule.forFeature([TaskListStoreEffects])
   ]
 })

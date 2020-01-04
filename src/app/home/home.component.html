@@ -9,4 +9,7 @@
   </div>
 </nav>
 
-<app-task-list></app-task-list>
+<app-task-list
+    [todoList]="currentList$ | async"
+    [rootTodoTaskNode]="rootTodoTask$ | async"
+></app-task-list>

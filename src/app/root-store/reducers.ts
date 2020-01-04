@@ -4,16 +4,16 @@ import * as fromTodoList from '@src/app/task-list/store/reducers';
 import * as fromTodoTask from '@src/app/task-list/task-item/store/reducers';
 
 
-export const rootKey = 'appState';
+export const featureKey = 'appState';
 
-export interface AppState {
+export interface State {
     userId: number;
     currentListId: number;
     currentError?: string;
     currentMessage?: string;
 }
 
-export const initialState: AppState = {
+export const initialState: State = {
     userId: null,
     currentListId: null,
     currentError: null,
@@ -34,11 +34,11 @@ const rootReducers = createReducer(
         (state, action) => ({
             ...state,
             userId: action.data.currentUserId,
-            currentListI: action.data.currentListId
+            currentListId: action.data.currentListId
         })
     )
 );
 
-export function reducers(state: AppState | undefined, action: Action) {
+export function reducers(state: State | undefined, action: Action) {
     return rootReducers(state, action);
 }

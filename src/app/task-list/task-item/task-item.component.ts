@@ -1,6 +1,9 @@
 import {AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {TaskStatus, TodoTask} from '@src/app/model/todolist';
+import {Observable} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {selectTodoTaskById} from '@src/app/task-list/task-item/store/selectors';
 
 @Component({
   selector: 'app-task-item',
@@ -8,38 +11,30 @@ import {TaskStatus, TodoTask} from '@src/app/model/todolist';
   styleUrls: ['./task-item.component.css']
 })
 export class TaskItemComponent implements OnInit {
-  @Input() todoTask: TodoTask;
+  @Input() todoTaskId: number;
+  todoTask$: Observable<TodoTask>;
   taskNameFormControl: FormControl;
   taskStatus: TaskStatus;
-  editMode: boolean;
 
-  constructor() {}
+  constructor(private store$: Store<{}>) {
+    this.todoTask$ = this.store$.pipe(select(selectTodoTaskById, { id: this.todoTaskId }));
+    console.log(`subscribing to task in constructor...`);
+  }
 
   ngOnInit() {
-    this.taskNameFormControl = new FormControl(this.todoTask.name);
-    this.taskNameFormControl.valueChanges.subscribe(value => this.updateTaskName(value) );
-    this.taskStatus = this.todoTask.status;
+    this.todoTask$.subscribe(todoTask => {
+      console.log('subscring to task in ngOnInit');
+      this.taskNameFormControl = new FormControl(todoTask.name);
+      this.taskNameFormControl.valueChanges.subscribe(newName => this.updateTaskName(newName) );
+    });
   }
 
   markTaskAsStarted() {
-    this.todoTask.status = TaskStatus.IN_PROGRESS;
-    this.saveTask();
-    this.ngOnInit();
   }
 
   markTaskAsCompleted() {
-    this.todoTask.status = TaskStatus.COMPLETED;
-    this.saveTask();
-    this.ngOnInit();
   }
 
-  private updateTaskName(value: string) {
-    this.todoTask.name = value;
-  }
-
-  private saveTask() {
-    console.log('Syncing task with backend: ' + this.todoTask);
-    this.editMode = false;
-    this.ngOnInit();
+  private updateTaskName(newName: string) {
   }
 }

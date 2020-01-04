@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import {AllUiData} from './datatransfer';
 import {Observable} from 'rxjs';
+import * as fromMockData from './mock-data';
 
 
 const MOCK_DATA: AllUiData = {
   currentUserId: 1234567890,
-  currentListId: 987654321
+  currentListId: fromMockData.TODO_LIST_ID
 };
 
 @Injectable({

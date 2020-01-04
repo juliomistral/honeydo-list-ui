@@ -1,10 +1,11 @@
-<div class="d-flex flex-row justify-content-start align-items-center">
+<div class="d-flex flex-row justify-content-start align-items-center"
+     *ngIf="todoTask$ | async as task">
     <div class="status-button-group d-flex justify-content-between align-items-center">
-        <button class="{{taskStatus == 1 ? 'active' : ''}} btn btn-outline-success btn-circle btn-circle-sm"
+        <button class="{{task.status == 'IN_PROGRESS' ? 'active' : ''}} btn btn-outline-success btn-circle btn-circle-sm"
                 (click)="markTaskAsStarted()">
             <i class="fa fa-play"></i>
         </button>
-        <button class="{{taskStatus == 3 ? 'active' : ''}} btn btn-outline-info btn-circle btn-circle-sm m-1"
+        <button class="{{task.status == 'COMPLETED' ? 'active' : ''}} btn btn-outline-info btn-circle btn-circle-sm m-1"
                 (click)="markTaskAsCompleted()">
             <i class="fa fa-check"></i>
         </button>
@@ -12,7 +13,6 @@
     <div class="pl-1 mr-2 w-100">
         <input type="text"
                class="form-control border-0 mw-100 w-100"
-               [formControl]="taskNameFormControl"
-               (blur)="saveTask()">
+               [formControl]="taskNameFormControl">
     </div>
 </div>

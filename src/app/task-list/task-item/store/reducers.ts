@@ -4,29 +4,26 @@ import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
 import {TodoTask} from '@src/app/model/todolist';
 
 
-export const todoTaskFeatureKey = 'taskItems';
+export const featureKey = 'taskItems';
 
-export const todoTaskAdapter: EntityAdapter<TodoTask> = createEntityAdapter<TodoTask>({
+export const adapter: EntityAdapter<TodoTask> = createEntityAdapter<TodoTask>({
     selectId: model => model.id
 });
 
-export interface TodoTaskState extends EntityState<TodoTask> {
-    isLoading?: boolean;
-    error?: string;
+export interface State extends EntityState<TodoTask> {
+    isLoading: boolean;
 }
 
-export const initialState: TodoTaskState = todoTaskAdapter.getInitialState({
+export const initialState: State = adapter.getInitialState({
     isLoading: true,
-    error: null
 });
-
 
 const todoTaskReducers = createReducer(
     initialState,
     on(
         todoTaskActions.rootTodoTasksLoaded,
         (state, action) => {
-            return todoTaskAdapter.addAll(
+            return adapter.addAll(
                 action.tasks, {
                     ...state,
                     isLoading: false
@@ -36,7 +33,6 @@ const todoTaskReducers = createReducer(
     )
 );
 
-export function reducer(state: TodoTaskState | undefined, action: Action) {
+export function reducer(state: State | undefined, action: Action) {
     return todoTaskReducers(state, action);
-
 }

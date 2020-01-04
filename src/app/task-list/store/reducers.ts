@@ -1,34 +1,35 @@
 import {Action, createReducer, on} from '@ngrx/store';
 import * as todolistActions from './actions';
 import {Todolist} from '@src/app/model/todolist';
+import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
 
 
-export const todoListFeatureKey = 'taskLists';
+export const featureKey = 'taskLists';
 
-export interface TodolistState {
-    currentList: Todolist;
-    isLoading?: boolean;
-    error?: string;
+export const adapter: EntityAdapter<Todolist> = createEntityAdapter<Todolist>({
+    selectId: model => model.id
+});
+
+export interface State extends EntityState<Todolist> {
+    isLoading: boolean;
 }
 
-export const initialState: TodolistState = {
-    currentList: null,
+export const initialState: State = adapter.getInitialState({
     isLoading: true,
-    error: null
-};
+});
 
 const todoListReducers = createReducer(
     initialState,
     on(
         todolistActions.todoListLoadedAction,
-        (state, action) => ({
-            ...state,
-            currentList: action.todoList,
-            isLoading: false
-        })
-    ),
+        (state, action) => adapter.addOne(
+            action.todoList, {
+                ...state,
+                isLoading: false
+            })
+    )
 );
 
-export function reducer(state: TodolistState | undefined, action: Action) {
+export function reducer(state: State | undefined, action: Action) {
     return todoListReducers(state, action);
 }

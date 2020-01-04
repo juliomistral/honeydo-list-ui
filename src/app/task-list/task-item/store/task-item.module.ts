@@ -9,7 +9,7 @@ import {TodoItemStoreEffects} from 'src/app/task-list/task-item/store/effects';
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature(fromTaskItems.todoTaskFeatureKey, fromTaskItems.reducer),
+    StoreModule.forFeature(fromTaskItems.featureKey, fromTaskItems.reducer),
     EffectsModule.forFeature([TodoItemStoreEffects])
   ]
 })
