@@ -4,7 +4,6 @@ import {TodoListVM} from '@src/app/task-list/view-model';
 import {Dictionary} from '@ngrx/entity';
 import * as fromTodoList from '@src/app/task-list/store/reducers';
 import * as fromRoot from '@src/app/root-store/selectors';
-import {selectCurrentListId} from '@src/app/root-store/selectors';
 
 
 const {
@@ -25,7 +24,7 @@ const getTodoListEntities = createSelector(
 
 export const selectCurrentTodoList = createSelector(
     getTodoListEntities,
-    selectCurrentListId,
+    fromRoot.selectCurrentListId,
     (entities, listId) => _buildTodoListVMForId(entities, listId)
 );
 

@@ -19,7 +19,7 @@ export const MOCK_TODO_LIST: Todolist = {
 export const MOCK_TODO_TASKS = [{
         id: ROOT_ID,
         name: '',
-        subTasks: [TASK_1_ID, TASK_2_ID, TASK_3_ID]
+        subTaskIds: [TASK_1_ID, TASK_2_ID, TASK_3_ID]
     }, {
         id: TASK_1_ID,
         name: 'Go to Safeway',
@@ -34,7 +34,7 @@ export const MOCK_TODO_TASKS = [{
         id: TASK_3_ID,
         name: 'Hang up picture',
         parentId: ROOT_ID,
-        subTasks: [TASK_3_A_ID, TASK_3_B_ID]
+        subTaskIds: [TASK_3_A_ID, TASK_3_B_ID]
     }, {
         id: TASK_3_A_ID,
         name: 'Go to HomeDepot to get hooks',

@@ -6,8 +6,12 @@ export interface TodoTaskVM {
     status: TaskStatus;
 }
 
-export interface TodoTaskNodeVM {
+export class TodoTaskNodeVM {
     id: number;
     parentId?: number;
     subNodes?: TodoTaskNodeVM[];
+
+    toString = (): string => {
+        return `[${this.id}] Sub nodes length = ${this.subNodes.length}`;
+    }
 }

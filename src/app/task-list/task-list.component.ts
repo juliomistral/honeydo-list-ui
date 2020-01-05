@@ -53,6 +53,7 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
     }
 
     ngOnInit() {
+        this.dataSource.data = this.rootTodoTaskNode.subNodes;
         this.treeControl.expandAll();
     }
 

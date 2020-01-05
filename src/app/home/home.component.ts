@@ -14,7 +14,6 @@ import {selectTodoTaskNodesForCurrentList} from '@src/app/task-list/task-item/st
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  title = 'honeydo-list-ui';
   currentList$: Observable<TodoListVM>;
   rootTodoTask$: Observable<TodoTaskNodeVM>;
 

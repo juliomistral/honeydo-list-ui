@@ -13,6 +13,7 @@
     <div class="pl-1 mr-2 w-100">
         <input type="text"
                class="form-control border-0 mw-100 w-100"
-               [formControl]="taskNameFormControl">
+               [formControl]="taskNameFormControl"
+                (blur)="updateTaskName()">
     </div>
 </div>

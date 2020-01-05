@@ -4,6 +4,8 @@ import {TaskStatus, TodoTask} from '@src/app/model/todolist';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {selectTodoTaskById} from '@src/app/task-list/task-item/store/selectors';
+import * as toTodoTask from '@src/app/task-list/task-item/store/actions';
+
 
 @Component({
   selector: 'app-task-item',
@@ -17,24 +19,34 @@ export class TaskItemComponent implements OnInit {
   taskStatus: TaskStatus;
 
   constructor(private store$: Store<{}>) {
-    this.todoTask$ = this.store$.pipe(select(selectTodoTaskById, { id: this.todoTaskId }));
-    console.log(`subscribing to task in constructor...`);
   }
 
   ngOnInit() {
+    this.todoTask$ = this.store$.pipe(select(selectTodoTaskById, { id: this.todoTaskId }));
     this.todoTask$.subscribe(todoTask => {
-      console.log('subscring to task in ngOnInit');
       this.taskNameFormControl = new FormControl(todoTask.name);
-      this.taskNameFormControl.valueChanges.subscribe(newName => this.updateTaskName(newName) );
     });
   }
 
   markTaskAsStarted() {
+    this.store$.dispatch(toTodoTask.markTaskAsStartedAction({ taskId: this.todoTaskId }));
   }
 
   markTaskAsCompleted() {
+    this.store$.dispatch(toTodoTask.markTaskAsCompletedAction({ taskId: this.todoTaskId }));
   }
 
-  private updateTaskName(newName: string) {
+  updateTaskName() {
+    if (!this.taskNameFormControl.dirty) {
+      return;
+    }
+
+    const newName: string = this.taskNameFormControl.value;
+    this.store$.dispatch(
+        toTodoTask.updateTodoTaskPropertiesAction({
+          id: this.todoTaskId,
+          name: newName
+        })
+    );
   }
 }
