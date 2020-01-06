@@ -5,8 +5,10 @@ import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {Store} from '@ngrx/store';
 import {TodoTaskNodeVM} from '@src/app/task-list/task-item/view-model';
 import {Todolist} from '../model/todolist';
+import * as toTodoList from '@src/app/task-list/store/actions';
 
-interface FlatTodoTaskNode {
+
+interface FlatTodoTaskNode extends Object {
     id: number;
     level: number;
     expandable: boolean;
@@ -29,12 +31,13 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
         return {
             id: todoTask.id,
             level: level,
-            expandable: todoTask.children.length > 0
+            expandable: todoTask.children.length > 0,
+            toString: () => `Flat node ID:  ${todoTask.id}`
         };
     }
 
     constructor(
-      private store: Store<{}>,
+      private store$: Store<{}>,
       private changeDetectorRef: ChangeDetectorRef) {
 
         this.treeControl = new FlatTreeControl<FlatTodoTaskNode>(
@@ -70,8 +73,9 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
         const draggedTask: FlatTodoTaskNode = this.treeControl.dataNodes[event.previousIndex];
         const dropTargetTask: FlatTodoTaskNode = this.treeControl.dataNodes[event.currentIndex];
 
-        console.log(`Prev. index: ${event.previousIndex}`);
-        console.log(`...dragged task:  ${draggedTask}`);
-        console.log(`...drop target task:  ${dropTargetTask}`);
+        this.store$.dispatch(toTodoList.moveTaskToNewPositionAction({
+            movedTaskId: draggedTask.id,
+            targetTaskId: dropTargetTask.id
+        }));
     }
 }
