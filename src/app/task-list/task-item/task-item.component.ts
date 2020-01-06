@@ -14,26 +14,29 @@ import * as toTodoTask from '@src/app/task-list/task-item/store/actions';
 })
 export class TaskItemComponent implements OnInit {
   @Input() todoTaskId: number;
-  todoTask$: Observable<TodoTask>;
+  todoTaskStreak$: Observable<TodoTask>;
+  currentTask: TodoTask;
   taskNameFormControl: FormControl;
-  taskStatus: TaskStatus;
 
-  constructor(private store$: Store<{}>) {
-  }
+  constructor(private store$: Store<{}>) {}
 
   ngOnInit() {
-    this.todoTask$ = this.store$.pipe(select(selectTodoTaskById, { id: this.todoTaskId }));
-    this.todoTask$.subscribe(todoTask => {
-      this.taskNameFormControl = new FormControl(todoTask.name);
+    this.todoTaskStreak$ = this.store$.pipe(
+        select(selectTodoTaskById, { id: this.todoTaskId })
+    );
+
+    this.todoTaskStreak$.subscribe(todoTask => {
+      this.currentTask = todoTask;
+      this.taskNameFormControl = new FormControl(this.currentTask.name);
     });
   }
 
   markTaskAsStarted() {
-    this.store$.dispatch(toTodoTask.markTaskAsStartedAction({ taskId: this.todoTaskId }));
+    this.store$.dispatch(toTodoTask.markTaskAsStartedAction({ taskId: this.currentTask.id }));
   }
 
   markTaskAsCompleted() {
-    this.store$.dispatch(toTodoTask.markTaskAsCompletedAction({ taskId: this.todoTaskId }));
+    this.store$.dispatch(toTodoTask.markTaskAsCompletedAction({ taskId: this.currentTask.id }));
   }
 
   updateTaskName() {
@@ -43,10 +46,10 @@ export class TaskItemComponent implements OnInit {
 
     const newName: string = this.taskNameFormControl.value;
     this.store$.dispatch(
-        toTodoTask.updateTodoTaskPropertiesAction({
-          id: this.todoTaskId,
-          name: newName
-        })
+        toTodoTask.updateTodoTaskProperties({ updatedTask: {
+          id: this.currentTask.id,
+          changes: { name: newName }
+        }})
     );
   }
 }

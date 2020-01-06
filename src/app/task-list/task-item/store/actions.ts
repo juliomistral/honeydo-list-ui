@@ -1,5 +1,6 @@
 import {Action, createAction, props} from '@ngrx/store';
 import {TodoTask} from '@src/app/model/todolist';
+import {Update} from '@ngrx/entity';
 
 export enum ActionTypes {
     // Outbound actions (view created events)
@@ -8,23 +9,24 @@ export enum ActionTypes {
     UPDATE_TODO_TASK_PROPERTIES = '[Task Item] Update task properties',
 
     // Intra store actions (cascading model updates)
-    ROOT_TODO_TASK_LOADED = '[Task Item] Root tasks loaded',
     LOAD_ROOT_TODO_TASKS = '[Task Item] Load tasks for root task',
+    ROOT_TODO_TASK_LOADED = '[Task Item] Root tasks loaded',
+    TODO_TASK_PROPERTIES_UPDATED = '[Task Item] Todo task updated'
 }
 
 export const markTaskAsCompletedAction = createAction(
     ActionTypes.MARK_TODO_TASK_COMPLETED,
-    props<{taskId: number}>()
+    props<{ taskId: number }>()
 );
 
 export const markTaskAsStartedAction = createAction(
     ActionTypes.MARK_TODO_TASK_STARTED,
-    props<{taskId: number}>()
+    props<{ taskId: number }>()
 );
 
-export const updateTodoTaskPropertiesAction = createAction(
+export const updateTodoTaskProperties = createAction(
     ActionTypes.UPDATE_TODO_TASK_PROPERTIES,
-    props<{id: number, name: string}>()
+    props<{ updatedTask: Update<TodoTask> }>()
 );
 
 export const loadRootTodoTasks = createAction(
@@ -37,3 +39,7 @@ export const rootTodoTasksLoaded = createAction(
     props<{ tasks: TodoTask[] }>()
 );
 
+export const todoTaskPropertiesUpdated = createAction(
+    ActionTypes.TODO_TASK_PROPERTIES_UPDATED,
+    props<{ updatedTask: Update<TodoTask> }>()
+);

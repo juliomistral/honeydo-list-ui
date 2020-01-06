@@ -1,17 +1,18 @@
-import {TaskStatus} from '@src/app/model/todolist';
-
-export interface TodoTaskVM {
-    id: number;
-    name: string;
-    status: TaskStatus;
-}
-
+/**
+ * Node representing a TodoTask within a tree structure.
+ *
+ * Each node MUST only contains IDs - no other data about a task
+ * SHOULD BE in the node class.
+ */
 export class TodoTaskNodeVM {
+    /** ID of the task this node represents*/
     id: number;
+    /** Task ID of this node's parent */
     parentId?: number;
-    subNodes?: TodoTaskNodeVM[];
+    /** Task ID of this node's children */
+    children?: TodoTaskNodeVM[];
 
     toString = (): string => {
-        return `[${this.id}] Sub nodes length = ${this.subNodes.length}`;
+        return `[${this.id}] Sub nodes length = ${this.children.length}`;
     }
 }

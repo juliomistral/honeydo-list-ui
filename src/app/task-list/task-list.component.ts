@@ -4,7 +4,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {Store} from '@ngrx/store';
 import {TodoTaskNodeVM} from '@src/app/task-list/task-item/view-model';
-import {TodoListVM} from '@src/app/task-list/view-model';
+import {Todolist} from '../model/todolist';
 
 interface FlatTodoTaskNode {
     id: number;
@@ -18,7 +18,7 @@ interface FlatTodoTaskNode {
   styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent implements OnInit, AfterViewChecked {
-    @Input() todoList: TodoListVM;
+    @Input() todoList: Todolist;
     @Input() rootTodoTaskNode: TodoTaskNodeVM;
 
     treeControl: FlatTreeControl<FlatTodoTaskNode>;
@@ -29,7 +29,7 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
         return {
             id: todoTask.id,
             level: level,
-            expandable: todoTask.subNodes.length > 0
+            expandable: todoTask.children.length > 0
         };
     }
 
@@ -46,14 +46,14 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
             TaskListComponent._transformer,
             node => node.level,
             node => node.expandable,
-            node => node.subNodes,
+            node => node.children,
         );
 
         this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.nodeFlatner);
     }
 
     ngOnInit() {
-        this.dataSource.data = this.rootTodoTaskNode.subNodes;
+        this.dataSource.data = this.rootTodoTaskNode.children;
         this.treeControl.expandAll();
     }
 

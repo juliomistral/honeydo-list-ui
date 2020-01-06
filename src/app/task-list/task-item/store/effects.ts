@@ -4,8 +4,8 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {catchError, switchMap} from 'rxjs/operators';
 import {errorAction} from '@src/app/root-store/actions';
 import {TodoTaskService} from '@src/app/services/todo-task.service';
-import * as TodoItemActions from '@src/app/task-list/task-item/store/actions';
-import {TodoTask} from '../../../model/todolist';
+import * as toTodoItems from '@src/app/task-list/task-item/store/actions';
+import {TaskStatus} from '../../../model/todolist';
 
 
 @Injectable()
@@ -14,12 +14,59 @@ export class TodoItemStoreEffects {
 
     loadTodoTask$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(TodoItemActions.loadRootTodoTasks),
+            ofType(toTodoItems.loadRootTodoTasks),
             switchMap((action: any) => {
                 return this.taskItemService.getTasksForRootTaskId(action.taskId);
             }),
             switchMap(todoTasks => [
-                TodoItemActions.rootTodoTasksLoaded({ tasks: todoTasks })
+                toTodoItems.rootTodoTasksLoaded({ tasks: todoTasks })
+            ]),
+            catchError(err =>
+                of(errorAction({ msg: err.toString() }))
+            )
+        )
+    );
+
+    updateTodoTaskProperties$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(toTodoItems.updateTodoTaskProperties),
+            switchMap((action: any) => {
+                return this.taskItemService.updateTodoTask(action.updatedTask);
+            }),
+            switchMap(updateResponse => [
+                toTodoItems.todoTaskPropertiesUpdated({
+                    updatedTask: updateResponse
+                })
+            ]),
+            catchError(err =>
+                of(errorAction({ msg: err.toString() }))
+            )
+        )
+    );
+
+    updateTodoTaskStatus$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(
+                toTodoItems.markTaskAsStartedAction,
+                toTodoItems.markTaskAsCompletedAction
+            ),
+            switchMap((action: any) => {
+                let newStatus: TaskStatus;
+                switch (action.type) {
+                    case toTodoItems.ActionTypes.MARK_TODO_TASK_STARTED: {
+                        newStatus = TaskStatus.IN_PROGRESS;
+                        break;
+                    }
+                    case toTodoItems.ActionTypes.MARK_TODO_TASK_COMPLETED: {
+                        newStatus = TaskStatus.COMPLETED;
+                        break;
+                    }
+                }
+                console.log(`Updating task status [${action.taskId}]:  ${newStatus}`);
+                return this.taskItemService.updateTodoTaskStatus(action.taskId, newStatus);
+            }),
+            switchMap(updateResponse => [
+                toTodoItems.todoTaskPropertiesUpdated({updatedTask: updateResponse})
             ]),
             catchError(err =>
                 of(errorAction({ msg: err.toString() }))

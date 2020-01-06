@@ -1,5 +1,3 @@
-import { Type } from "class-transformer";
-
 
 export enum TaskStatus {
     NOT_STARTED = 'NOT_STARTED',
@@ -25,7 +23,7 @@ export class TodoTask {
     id: number;
     name: string;
     status?: TaskStatus;
-    parentId: TodoTask;
+    parentId: number;
     subTaskIds?: number[];
 
     constructor(id: number,
