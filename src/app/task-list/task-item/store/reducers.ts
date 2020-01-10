@@ -17,11 +17,8 @@ const todoTaskReducers = createReducer(
         (state, action) => adapter.addAll(action.tasks, state)
     ),
     on(
-        toTodoTask.todoTaskPropertiesUpdated,
-        (state, action) => {
-            console.log(`Updating task:  ${action.updatedTask}`);
-            return adapter.updateOne(action.updatedTask, state);
-        }
+        toTodoTask.todoTasksUpdated,
+        (state, action) => adapter.updateMany(action.updatedTasks, state)
     ),
 );
 

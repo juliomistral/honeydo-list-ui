@@ -11,7 +11,7 @@ export enum ActionTypes {
     // Intra store actions (cascading model updates)
     LOAD_ROOT_TODO_TASKS = '[Task Item] Load tasks for root task',
     ROOT_TODO_TASK_LOADED = '[Task Item] Root tasks loaded',
-    TODO_TASK_PROPERTIES_UPDATED = '[Task Item] Todo task updated'
+    TODO_TASKS_UPDATED = '[Task Item] Todo task(s) updated'
 }
 
 export const markTaskAsCompletedAction = createAction(
@@ -39,7 +39,7 @@ export const rootTodoTasksLoaded = createAction(
     props<{ tasks: TodoTask[] }>()
 );
 
-export const todoTaskPropertiesUpdated = createAction(
-    ActionTypes.TODO_TASK_PROPERTIES_UPDATED,
-    props<{ updatedTask: Update<TodoTask> }>()
+export const todoTasksUpdated = createAction(
+    ActionTypes.TODO_TASKS_UPDATED,
+    props<{ updatedTasks: Update<TodoTask>[] }>()
 );

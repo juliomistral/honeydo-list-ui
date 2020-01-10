@@ -14,18 +14,18 @@ import * as toTodoTask from '@src/app/task-list/task-item/store/actions';
 })
 export class TaskItemComponent implements OnInit {
   @Input() todoTaskId: number;
-  todoTaskStreak$: Observable<TodoTask>;
+  todoTaskStream$: Observable<TodoTask>;
   currentTask: TodoTask;
   taskNameFormControl: FormControl;
 
   constructor(private store$: Store<{}>) {}
 
   ngOnInit() {
-    this.todoTaskStreak$ = this.store$.pipe(
+    this.todoTaskStream$ = this.store$.pipe(
         select(selectTodoTaskById, { id: this.todoTaskId })
     );
 
-    this.todoTaskStreak$.subscribe(todoTask => {
+    this.todoTaskStream$.subscribe(todoTask => {
       this.currentTask = todoTask;
       this.taskNameFormControl = new FormControl(this.currentTask.name);
     });

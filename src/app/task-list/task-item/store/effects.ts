@@ -34,9 +34,7 @@ export class TodoItemStoreEffects {
                 return this.taskItemService.updateTodoTask(action.updatedTask);
             }),
             switchMap(updateResponse => [
-                toTodoItems.todoTaskPropertiesUpdated({
-                    updatedTask: updateResponse
-                })
+                toTodoItems.todoTasksUpdated({ updatedTasks: [updateResponse] })
             ]),
             catchError(err =>
                 of(errorAction({ msg: err.toString() }))
@@ -66,11 +64,13 @@ export class TodoItemStoreEffects {
                 return this.taskItemService.updateTodoTaskStatus(action.taskId, newStatus);
             }),
             switchMap(updateResponse => [
-                toTodoItems.todoTaskPropertiesUpdated({updatedTask: updateResponse})
+                toTodoItems.todoTasksUpdated({ updatedTasks: [updateResponse] })
             ]),
             catchError(err =>
                 of(errorAction({ msg: err.toString() }))
             )
         )
     );
+
+
 }

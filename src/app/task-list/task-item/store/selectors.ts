@@ -29,7 +29,7 @@ function _buildTreeVMForTaskId(entities: Dictionary<TodoTask>, taskId: number): 
         children: []
     };
 
-    if (rootTask.hasChildren()) {
+    if (rootTask.subTaskIds) {
         rootTask.subTaskIds.forEach(subTaskId => {
             rootNode.children.push(_buildTreeVMForTaskId(entities, subTaskId));
         });
@@ -40,7 +40,10 @@ function _buildTreeVMForTaskId(entities: Dictionary<TodoTask>, taskId: number): 
 export const selectTodoTaskNodesForCurrentList = createSelector(
     getTodoTaskEntities,
     selectCurrentTodoList,
-    (entities: Dictionary<TodoTask>, todoList: Todolist) => _buildTreeVMForTaskId(entities, todoList.rootTaskId)
+    (entities: Dictionary<TodoTask>, todoList: Todolist) => {
+        console.log('In selector:  creating task node tree...');
+        return _buildTreeVMForTaskId(entities, todoList.rootTaskId);
+    }
 );
 
 export const selectTodoTaskById = createSelector(

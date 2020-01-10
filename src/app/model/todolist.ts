@@ -37,18 +37,10 @@ export class TodoTask {
         this.parentId = parent;
         this.subTaskIds = subTaskIds;
     }
-
-    public hasChildren(): boolean {
-        return this.subTaskIds.length > 0;
-    }
-
-    public isCompleted(): boolean {
-        return this.status === TaskStatus.COMPLETED;
-    }
-
-    public isRoot(): boolean {
-        return this.parentId = null;
-    }
+    //
+    // public hasChildren(): boolean {
+    //     return this.subTaskIds.length > 0;
+    // }
 
     public toString(): string {
         return `[${this.id}] ${this.name} (${this.status})`;

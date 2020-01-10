@@ -12,7 +12,7 @@ export class TodoTaskNodeVM {
     /** Task ID of this node's children */
     children?: TodoTaskNodeVM[];
 
-    toString = (): string => {
+    public toString(): string {
         return `[${this.id}] Sub nodes length = ${this.children.length}`;
     }
 }

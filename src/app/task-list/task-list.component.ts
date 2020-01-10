@@ -1,11 +1,14 @@
 import {AfterViewChecked, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import {Observable} from 'rxjs';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {TodoTaskNodeVM} from '@src/app/task-list/task-item/view-model';
 import {Todolist} from '../model/todolist';
 import * as toTodoList from '@src/app/task-list/store/actions';
+import {selectCurrentTodoList} from '@src/app/task-list/store/selectors';
+import {selectTodoTaskNodesForCurrentList} from '@src/app/task-list/task-item/store/selectors';
 
 
 interface FlatTodoTaskNode extends Object {
@@ -20,19 +23,23 @@ interface FlatTodoTaskNode extends Object {
   styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent implements OnInit, AfterViewChecked {
-    @Input() todoList: Todolist;
-    @Input() rootTodoTaskNode: TodoTaskNodeVM;
+    @Input() todoListId: number;
+    @Input() rootTodoTaskId: number;
 
     treeControl: FlatTreeControl<FlatTodoTaskNode>;
     nodeFlatner: MatTreeFlattener<TodoTaskNodeVM, FlatTodoTaskNode>;
     dataSource: MatTreeFlatDataSource<TodoTaskNodeVM, FlatTodoTaskNode>;
 
+    todoListStream$: Observable<Todolist>;
+    todoList: Todolist;
+    rootTodoTaskNodeStream$: Observable<TodoTaskNodeVM>;
+    rootTodoTask: TodoTaskNodeVM;
+
     static _transformer(todoTask: TodoTaskNodeVM, level: number): FlatTodoTaskNode {
         return {
             id: todoTask.id,
             level: level,
-            expandable: todoTask.children.length > 0,
-            toString: () => `Flat node ID:  ${todoTask.id}`
+            expandable: todoTask.children.length > 0
         };
     }
 
@@ -56,8 +63,9 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
     }
 
     ngOnInit() {
-        this.dataSource.data = this.rootTodoTaskNode.children;
-        this.treeControl.expandAll();
+        this._subscribeToTodoList();
+        this._subscribeToTodoTask();
+        this._initTreeForRendering();
     }
 
     ngAfterViewChecked(): void {
@@ -67,6 +75,28 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
         //
         // For more info, see bug https://github.com/angular/components/issues/15948
         this.changeDetectorRef.detectChanges();
+    }
+
+    private _subscribeToTodoList() {
+        this.todoListStream$ = this.store$.pipe(select(selectCurrentTodoList));
+        this.todoListStream$.subscribe(value => {
+            console.log('...getting updated todo list from store...', value);
+            return this.todoList = value;
+        });
+    }
+
+    private _subscribeToTodoTask() {
+        this.rootTodoTaskNodeStream$ = this.store$.pipe(select(selectTodoTaskNodesForCurrentList));
+        this.rootTodoTaskNodeStream$.subscribe(value => {
+            console.log('...getting updated root todo task from store...', value);
+            this.rootTodoTask = value;
+            this._initTreeForRendering();
+        });
+    }
+
+    private _initTreeForRendering() {
+        this.dataSource.data = this.rootTodoTask.children;
+        this.treeControl.expandAll();
     }
 
     handleTaskDrop(event: CdkDragDrop<FlatTodoTaskNode>) {

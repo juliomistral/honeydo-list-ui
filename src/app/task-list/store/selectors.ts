@@ -24,3 +24,8 @@ export const selectCurrentTodoList = createSelector(
     fromRoot.selectCurrentListId,
     (entities, listId) => entities[listId]
 );
+
+export const selectCurrentTodoListRootTaskId = createSelector(
+    selectCurrentTodoList,
+    (todoList) => todoList.rootTaskId
+);
