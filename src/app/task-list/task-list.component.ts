@@ -1,12 +1,13 @@
 import {AfterViewChecked, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {Observable} from 'rxjs';
-import { FlatTreeControl } from '@angular/cdk/tree';
+import {FlatTreeControl} from '@angular/cdk/tree';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {select, Store} from '@ngrx/store';
 import {TodoTaskNodeVM} from '@src/app/task-list/task-item/view-model';
 import {Todolist} from '../model/todolist';
 import * as toTodoList from '@src/app/task-list/store/actions';
+import {MoveDirection} from '@src/app/task-list/store/actions';
 import {selectCurrentTodoList} from '@src/app/task-list/store/selectors';
 import {selectTodoTaskNodesForCurrentList} from '@src/app/task-list/task-item/store/selectors';
 
@@ -31,8 +32,8 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
     dataSource: MatTreeFlatDataSource<TodoTaskNodeVM, FlatTodoTaskNode>;
 
     todoListStream$: Observable<Todolist>;
-    todoList: Todolist;
     rootTodoTaskNodeStream$: Observable<TodoTaskNodeVM>;
+    todoList: Todolist;
     rootTodoTask: TodoTaskNodeVM;
 
     static _transformer(todoTask: TodoTaskNodeVM, level: number): FlatTodoTaskNode {
@@ -102,10 +103,18 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
     handleTaskDrop(event: CdkDragDrop<FlatTodoTaskNode>) {
         const draggedTask: FlatTodoTaskNode = this.treeControl.dataNodes[event.previousIndex];
         const dropTargetTask: FlatTodoTaskNode = this.treeControl.dataNodes[event.currentIndex];
+        const direction: MoveDirection = (
+            event.previousIndex - event.currentIndex < 0 ?
+            MoveDirection.DOWN : MoveDirection.UP
+        );
 
+        console.log(`dragged tas ID: ${draggedTask.id}, target task ID: ${dropTargetTask.id}, direction: ${direction}`);
+
+        console.log(`previous index: ${event.previousIndex}, new index: ${event.currentIndex}`);
         this.store$.dispatch(toTodoList.moveTaskToNewPositionAction({
             movedTaskId: draggedTask.id,
-            targetTaskId: dropTargetTask.id
+            targetTaskId: dropTargetTask.id,
+            direction: direction
         }));
     }
 }

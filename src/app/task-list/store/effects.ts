@@ -33,7 +33,11 @@ export class TaskListStoreEffects {
         this.actions$.pipe(
             ofType(toTodoList.moveTaskToNewPositionAction),
             switchMap((action: any) =>
-                this.todoTaskService.moveTaskToNewPosition(action.movedTaskId, action.targetTaskId)
+                this.todoTaskService.moveTaskToNewPosition(
+                    action.movedTaskId,
+                    action.targetTaskId,
+                    action.direction
+                )
             ),
             switchMap(resp => [
                 toTodoTasks.todoTasksUpdated({ updatedTasks: resp }),

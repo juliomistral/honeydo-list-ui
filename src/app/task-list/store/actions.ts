@@ -12,6 +12,11 @@ export enum ActionTypes {
     TODO_TASK_ORDERING_CHANGED= '[Task List] Task ordering changed',
 }
 
+export enum MoveDirection {
+    UP = 'UP',
+    DOWN = 'DOWN'
+}
+
 export const todoListLoadedAction = createAction(
     ActionTypes.TODO_LIST_LOADED,
     props<{todoList: Todolist }>()
@@ -19,7 +24,7 @@ export const todoListLoadedAction = createAction(
 
 export const moveTaskToNewPositionAction = createAction(
     ActionTypes.MOVE_TODO_TASK_TO_NEW_POSITION,
-    props<{ movedTaskId: number, targetTaskId: number }>()
+    props<{ movedTaskId: number, targetTaskId: number, direction: MoveDirection }>()
 );
 
 export const toDoListUpdatedAction = createAction(
