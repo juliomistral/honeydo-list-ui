@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
 import {TaskStatus, TodoTask} from '@src/app/model/todolist';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
@@ -16,7 +16,8 @@ export class TaskItemComponent implements OnInit {
   @Input() todoTaskId: number;
   todoTaskStream$: Observable<TodoTask>;
   currentTask: TodoTask;
-  taskNameFormControl: FormControl;
+  taskNameControl: FormControl;
+  taskStatusControl: FormControl;
 
   constructor(private store$: Store<{}>) {}
 
@@ -27,24 +28,27 @@ export class TaskItemComponent implements OnInit {
 
     this.todoTaskStream$.subscribe(todoTask => {
       this.currentTask = todoTask;
-      this.taskNameFormControl = new FormControl(this.currentTask.name);
+      this.taskNameControl = new FormControl(this.currentTask.name);
+      this.taskStatusControl = new FormControl(this.currentTask.status === TaskStatus.COMPLETED);
     });
   }
 
-  markTaskAsStarted() {
-    this.store$.dispatch(toTodoTask.markTaskAsStartedAction({ taskId: this.currentTask.id }));
-  }
+  isTaskCompleted(): boolean { return this.currentTask.status === TaskStatus.COMPLETED; }
 
-  markTaskAsCompleted() {
-    this.store$.dispatch(toTodoTask.markTaskAsCompletedAction({ taskId: this.currentTask.id }));
+  toggleTaskStatus() {
+    if (this.currentTask.status === TaskStatus.COMPLETED) {
+      this.store$.dispatch(toTodoTask.markTaskAsStartedAction({ taskId: this.currentTask.id }));
+    } else {
+      this.store$.dispatch(toTodoTask.markTaskAsCompletedAction({ taskId: this.currentTask.id }));
+    }
   }
 
   updateTaskName() {
-    if (!this.taskNameFormControl.dirty) {
+    if (!this.taskNameControl.dirty) {
       return;
     }
 
-    const newName: string = this.taskNameFormControl.value;
+    const newName: string = this.taskNameControl.value;
     this.store$.dispatch(
         toTodoTask.updateTodoTaskProperties({ updatedTask: {
           id: this.currentTask.id,
