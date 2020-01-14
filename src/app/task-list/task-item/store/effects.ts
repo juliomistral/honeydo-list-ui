@@ -60,11 +60,10 @@ export class TodoItemStoreEffects {
                         break;
                     }
                 }
-                console.log(`Updating task status [${action.taskId}]:  ${newStatus}`);
                 return this.taskItemService.updateTodoTaskStatus(action.taskId, newStatus);
             }),
-            switchMap(updateResponse => [
-                toTodoItems.todoTasksUpdated({ updatedTasks: [updateResponse] })
+            switchMap(updatesResponse => [
+                toTodoItems.todoTasksUpdated({ updatedTasks: updatesResponse })
             ]),
             catchError(err =>
                 of(errorAction({ msg: err.toString() }))

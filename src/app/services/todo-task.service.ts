@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 import {TaskStatus, TodoTask} from '@src/app/model/todolist';
-import { plainToClass } from 'class-transformer';
+import {plainToClass} from 'class-transformer';
 import * as fromMockData from './mock-data';
 import {Update} from '@ngrx/entity';
 import {select, Store} from '@ngrx/store';
@@ -30,13 +30,40 @@ export class TodoTaskService {
       });
   }
 
-  updateTodoTaskStatus(taskId: number, newStatus: TaskStatus): Observable<Update<TodoTask>> {
-      return new Observable<Update<TodoTask>>(subscriber => {
-          const updatedTask: Update<TodoTask> = {
+  updateTodoTaskStatus(taskId: number, newStatus: TaskStatus): Observable<Update<TodoTask>[]> {
+      // Update task status
+      const statusUpdates: Update<TodoTask>[] = new Array<Update<TodoTask>>();
+      statusUpdates.push({
+          id: taskId,
+          changes: {status: newStatus}
+      });
+
+      // Complete child tasks if parent is completed
+      const updatedTask: TodoTask = this._retrieveTaskFromStore(taskId);
+      if (newStatus === TaskStatus.COMPLETED) {
+          this._createUpdatesForTaskStatusChanges(
+              updatedTask.subTaskIds,
+              TaskStatus.COMPLETED,
+              statusUpdates
+          );
+      } else if (newStatus === TaskStatus.IN_PROGRESS) {
+          this._createUpdatesForTaskStatusChanges(
+              updatedTask.subTaskIds,
+              TaskStatus.IN_PROGRESS,
+              statusUpdates);
+      }
+
+      return new Observable<Update<TodoTask>[]>(subscriber => {
+          subscriber.next(statusUpdates);
+      });
+  }
+
+  private _createUpdatesForTaskStatusChanges(taskIds: number[], newStatus: TaskStatus, updates: Update<TodoTask>[]): void {
+      taskIds.forEach(taskId => {
+          updates.push({
               id: taskId,
               changes: {status: newStatus}
-          };
-          subscriber.next(updatedTask);
+          });
       });
   }
 
