@@ -13,13 +13,13 @@
                [formControl]="taskStatusControl"
                (click)="toggleTaskStatus()">
     </div>
-    <div class="pl-1 mr-2 w-100">
+    <div class="task-name mr-2 w-100">
         <div *ngIf="isTaskCompleted()" class="completed-task-text">
             {{this.currentTask.name}}
         </div>
         <input type="text"
                *ngIf="!isTaskCompleted()"
-               class="form-control border-0 mw-100 w-100"
+               class="task-name-input form-control border-0 mw-100 w-100"
                [formControl]="taskNameControl"
                 (blur)="updateTaskName()">
 
