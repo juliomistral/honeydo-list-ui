@@ -12,6 +12,15 @@ export class TodoTaskNodeVM {
     /** Task ID of this node's children */
     children?: TodoTaskNodeVM[];
 
+
+    constructor(id: number = null,
+                parentId: number = null,
+                children: TodoTaskNodeVM[] = []) {
+        this.id = id;
+        this.parentId = parentId;
+        this.children = children;
+    }
+
     public toString(): string {
         return `[${this.id}] Sub nodes length = ${this.children.length}`;
     }

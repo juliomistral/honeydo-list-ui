@@ -26,8 +26,8 @@ export class TodoTask {
     parentId: number;
     subTaskIds?: number[];
 
-    constructor(id: number,
-                name: string,
+    constructor(id: number = null,
+                name: string = null,
                 status = TaskStatus.NOT_STARTED,
                 parent = null,
                 subTaskIds = [] as number[]) {

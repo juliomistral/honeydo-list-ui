@@ -1,13 +1,5 @@
 <div class="d-flex flex-row justify-content-start align-items-center">
     <div class="status-button-group d-flex justify-content-between align-items-center">
-<!--        <button class="{{currentTask.status == 'IN_PROGRESS' ? 'active' : ''}} btn btn-outline-success btn-circle btn-circle-sm"-->
-<!--                (click)="markTaskAsStarted()">-->
-<!--            <i class="fa fa-play"></i>-->
-<!--        </button>-->
-<!--        <button class="{{currentTask.status == 'COMPLETED' ? 'active' : ''}} btn btn-outline-info btn-circle btn-circle-sm m-1"-->
-<!--                (click)="markTaskAsCompleted()">-->
-<!--            <i class="fa fa-check"></i>-->
-<!--</button>-->
         <input type="checkbox"
                class=""
                [formControl]="taskStatusControl"
@@ -19,6 +11,7 @@
         </div>
         <input type="text"
                *ngIf="!isTaskCompleted()"
+               placeholder="What do you want to do..."
                class="task-name-input form-control border-0 mw-100 w-100"
                [formControl]="taskNameControl"
                 (blur)="updateTaskName()">

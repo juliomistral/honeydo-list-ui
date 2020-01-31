@@ -13,9 +13,9 @@ import {selectTodoTaskNodesForCurrentList} from '@src/app/task-list/task-item/st
 
 
 interface FlatTodoTaskNode extends Object {
-    id: number;
-    level: number;
-    expandable: boolean;
+    id?: number;
+    level?: number;
+    expandable?: boolean;
 }
 
 @Component({
@@ -96,7 +96,11 @@ export class TaskListComponent implements OnInit, AfterViewChecked {
     }
 
     private _initTreeForRendering() {
-        this.dataSource.data = this.rootTodoTask.children;
+        const emptyNode: TodoTaskNodeVM = new TodoTaskNodeVM();
+        const treeNodes: TodoTaskNodeVM[] = Object.assign([], this.rootTodoTask.children);
+        treeNodes.push(emptyNode);
+
+        this.dataSource.data = treeNodes;
         this.treeControl.expandAll();
     }
 

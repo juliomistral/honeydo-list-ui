@@ -22,6 +22,11 @@ export class TaskItemComponent implements OnInit {
   constructor(private store$: Store<{}>) {}
 
   ngOnInit() {
+    if (this.todoTaskId === null) {
+      this.currentTask = new TodoTask();
+      return;
+    }
+
     this.todoTaskStream$ = this.store$.pipe(
         select(selectTodoTaskById, { id: this.todoTaskId })
     );
